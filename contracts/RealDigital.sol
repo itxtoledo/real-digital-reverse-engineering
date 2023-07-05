@@ -10,7 +10,7 @@ import "./CBDCAccessControl.sol";
 contract RealDigital is ERC20Burnable, Pausable, CBDCAccessControl {
     mapping(address => uint256) public frozenBalanceOf; // Mapping to track frozen balances
 
-    event FrozenBalance(address wallet, uint256 amount); // Event emitted when a balance is frozen
+    event FrozenBalance(address indexed wallet, uint256 amount); // Event emitted when a balance is frozen
 
     modifier checkFrozenBalance(address from, uint256 amount) {
         require(
@@ -51,12 +51,16 @@ contract RealDigital is ERC20Burnable, Pausable, CBDCAccessControl {
         _mint(to, amount);
     }
 
-    /// @dev Burns tokens from sender address.
+    /// @dev Burns tokens from the sender's address.
     /// @param amount The amount of tokens to burn.
     function burn(uint256 amount) public override whenNotPaused {
         super.burn(amount);
     }
 
+    /// @dev Transfers tokens from one address to another.
+    /// @param from The address to transfer tokens from.
+    /// @param to The address to transfer tokens to.
+    /// @param amount The amount of tokens to transfer.
     function move(
         address from,
         address to,
@@ -65,9 +69,9 @@ contract RealDigital is ERC20Burnable, Pausable, CBDCAccessControl {
         _transfer(from, to, amount);
     }
 
-    /// @dev Burns tokens from a specified address.
-    /// @param from The address to burn tokens from.
-    /// @param amount The amount of tokens to burn.
+    /// @dev Transfers tokens from a specified address and burns them.
+    /// @param from The address to transfer tokens from.
+    /// @param amount The amount of tokens to transfer and burn.
     function moveAndBurn(
         address from,
         uint256 amount
@@ -107,6 +111,9 @@ contract RealDigital is ERC20Burnable, Pausable, CBDCAccessControl {
         _unpause();
     }
 
+    /// @dev Increases the frozen balance of an address.
+    /// @param from The address to increase the frozen balance for.
+    /// @param amount The amount of tokens to increase the frozen balance by.
     function increaseFrozenBalance(
         address from,
         uint256 amount
@@ -115,6 +122,9 @@ contract RealDigital is ERC20Burnable, Pausable, CBDCAccessControl {
         emit FrozenBalance(from, amount);
     }
 
+    /// @dev Decreases the frozen balance of an address.
+    /// @param from The address to decrease the frozen balance for.
+    /// @param amount The amount of tokens to decrease the frozen balance by.
     function decreaseFrozenBalance(
         address from,
         uint256 amount
