@@ -1,10 +1,10 @@
 🌍 [English](README.md) | 🇵🇹 [Português](README.pt.md) | 🇪🇸 [Español](README.es.md) | 🇫🇷 [Français](README.fr.md) | 🇩🇪 [Deutsch](README.de.md)
 
-# Real Digital CBDC Reverse Engineering 🕵️‍♂️💻
+# Real Digital CBDC Predicted Implementation 🔮💻
 
-This project is an attempt to reverse engineer the Real Digital Central Bank Digital Currency (CBDC) smart contracts. As the source code for Real Digital was not made publicly available, only the ABIs were provided. Therefore, I took it upon myself to reverse engineer and infer the functionality of some of the functions.
+This project is an attempt to predict the Real Digital Central Bank Digital Currency (CBDC) smart contracts. As the source code for Real Digital was not made publicly available, only the ABIs were provided. Therefore, I took it upon myself to infer the functionality of some of the functions.
 
-Please note that this project is based on reverse engineering efforts and may not fully capture the actual implementation or intended behavior of the Real Digital CBDC. Use this code for reference and educational purposes only.
+Please note that this project is based on inferring efforts and may not fully capture the actual implementation or intended behavior of the Real Digital CBDC. Use this code for reference and educational purposes only.
 
 ## Disclaimer ⚠️
 
