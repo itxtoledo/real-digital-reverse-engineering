@@ -1,54 +1,118 @@
-
-import { expect } from "chai";
-import { RealDigital } from "../typechain-types/contracts/RealDigital";
-import { Signer, ContractFactory } from "ethers";
 import { ethers } from "hardhat";
+import { expect } from "chai";
 
-describe("RealDigital", function () {
-  let realDigital: RealDigital;
-  let owner: Signer;
-  let minter: Signer;
-  let burner: Signer;
-  const initialSupply: BigNumber = ethers.utils.parseEther("1000000");
+describe("RealDigital", () => {
+  async function deployFixture() {
+    const [admin, authority, addr1, addr2] = await ethers.getSigners();
 
-  before(async function () {
-    // Deploy the RealDigital contract
-    const RealDigital: ContractFactory = await ethers.getContractFactory("RealDigital");
-    realDigital = await RealDigital.deploy("RealDigital", "RD");
+    const RealDigitalFactory = await ethers.getContractFactory("RealDigital");
 
-    // Get signers from Hardhat
-    [owner, minter, burner] = await ethers.getSigners();
+    const RealDigital = await RealDigitalFactory.deploy(
+      "RealDigital Token",
+      "RDT",
+      authority.address,
+      admin.address
+    );
+
+    return {
+      realDigital: RealDigital,
+      accounts: { admin, authority, addr1, addr2 },
+    };
+  }
+
+  describe("Deployment", () => {
+    it("Should set the correct name and symbol", async () => {
+      const { realDigital } = await deployFixture();
+
+      expect(await realDigital.name()).to.equal("RealDigital Token");
+      expect(await realDigital.symbol()).to.equal("RDT");
+    });
+
+    it("Should have initial total supply of 0", async () => {
+      const { realDigital } = await deployFixture();
+
+      expect(await realDigital.totalSupply()).to.equal(0);
+    });
   });
 
-  it("should have correct name, symbol, and initial supply", async function () {
-    expect(await realDigital.name()).to.equal("RealDigital");
-    expect(await realDigital.symbol()).to.equal("RD");
-    expect(await realDigital.totalSupply()).to.equal(initialSupply);
+  describe("Minting", () => {
+    it("Should allow the authority to mint tokens", async () => {
+      const { realDigital, accounts } = await deployFixture();
+
+      const amount = 100;
+      await realDigital
+        .connect(accounts.authority)
+        .mint(accounts.addr2.address, amount);
+      expect(await realDigital.balanceOf(accounts.addr2.address)).to.equal(
+        amount
+      );
+    });
+
+    it("Should not allow non-authority accounts to mint tokens", async () => {
+      const { realDigital, accounts } = await deployFixture();
+
+      const amount = 100;
+      await expect(
+        realDigital.connect(accounts.admin).mint(accounts.addr1.address, amount)
+      ).to.be.revertedWith("RealDigital: must have minter role to mint");
+    });
   });
 
-  it("should mint tokens", async function () {
-    // Grant the minter role to the minter account
-    await realDigital.grantRole(await realDigital.MINTER_ROLE(), minter.address);
+  describe("Burning", () => {
+    it("Should allow the burner to burn tokens", async () => {
+      const { realDigital, accounts } = await deployFixture();
 
-    // Mint 100 tokens to the minter account
-    const amountToMint: BigNumber = ethers.utils.parseEther("100");
-    await realDigital.mint(minter.address, amountToMint);
+      const amount = 100;
+      await realDigital
+        .connect(accounts.authority)
+        .mint(accounts.addr2.address, amount);
+      await realDigital
+        .connect(accounts.authority)
+        .burnFrom(accounts.addr2.address, amount);
+      expect(await realDigital.balanceOf(accounts.addr2.address)).to.equal(0);
+    });
 
-    // Check the minter's balance
-    const minterBalance: BigNumber = await realDigital.balanceOf(minter.address);
-    expect(minterBalance).to.equal(amountToMint);
+    it("Should not allow non-burner accounts to burn tokens", async () => {
+      const { realDigital, accounts } = await deployFixture();
+
+      const amount = 100;
+      await realDigital
+        .connect(accounts.authority)
+        .mint(accounts.addr2.address, amount);
+      await expect(
+        realDigital
+          .connect(accounts.admin)
+          .burnFrom(accounts.addr2.address, amount)
+      ).to.be.revertedWith("RealDigital: must have burner role to burn");
+    });
   });
 
-  it("should burn tokens", async function () {
-    // Grant the burner role to the burner account
-    await realDigital.grantRole(await realDigital.BURNER_ROLE(), burner.address);
+  describe("Token Transfers", () => {
+    it("Should transfer tokens between accounts", async () => {
+      const { realDigital, accounts } = await deployFixture();
 
-    // Burn 50 tokens from the burner account
-    const amountToBurn: BigNumber = ethers.utils.parseEther("50");
-    await realDigital.burnFrom(burner.address, amountToBurn);
+      const amount = 100;
+      await realDigital
+        .connect(accounts.authority)
+        .mint(accounts.admin.address, amount);
+      await realDigital.transfer(accounts.addr2.address, amount);
+      expect(await realDigital.balanceOf(accounts.admin.address)).to.equal(0);
+      expect(await realDigital.balanceOf(accounts.addr2.address)).to.equal(
+        amount
+      );
+    });
 
-    // Check the burner's balance
-    const burnerBalance: BigNumber = await realDigital.balanceOf(burner.address);
-    expect(burnerBalance).to.equal(initialSupply.sub(amountToBurn));
+    it("Should not allow transfers when the contract is paused", async () => {
+      const { realDigital, accounts } = await deployFixture();
+
+      await realDigital.pause();
+      const amount = 100;
+      await realDigital
+        .connect(accounts.authority)
+        .mint(accounts.admin.address, amount);
+      await expect(
+        realDigital.transfer(accounts.addr2.address, amount)
+      ).to.be.revertedWith("Pausable: paused");
+    });
   });
 });

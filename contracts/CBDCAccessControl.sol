@@ -29,7 +29,7 @@ contract CBDCAccessControl is AccessControl {
     constructor(address _authority, address _admin) {
         // Set the contract admin role
         _setupRole(DEFAULT_ADMIN_ROLE, _admin);
-        
+
         // Set up the various roles with the authority address
         _setupRole(PAUSER_ROLE, _authority);
         _setupRole(MINTER_ROLE, _authority);
@@ -43,22 +43,33 @@ contract CBDCAccessControl is AccessControl {
     /// @param from The address of the sender.
     /// @param to The address of the receiver.
     modifier checkAccess(address from, address to) {
-        require(authorizedAccounts[from] && authorizedAccounts[to], "CBDCAccessControl: accounts not authorized");
+        require(
+            authorizedAccounts[from] && authorizedAccounts[to],
+            "CBDCAccessControl: accounts not authorized"
+        );
         _;
     }
 
     /// @dev Enables an account to have access.
     /// @param member The address of the account to enable.
     function enableAccount(address member) public {
-        require(!authorizedAccounts[member], "CBDCAccessControl: account already enabled");
+        require(
+            !authorizedAccounts[member],
+            "CBDCAccessControl: account already enabled"
+        );
         authorizedAccounts[member] = true;
         emit EnabledAccount(member);
     }
 
     /// @dev Disables an account from having access.
     /// @param member The address of the account to disable.
-    function disableAccount(address member) public {
-        require(authorizedAccounts[member], "CBDCAccessControl: account already disabled");
+    function disableAccount(
+        address member
+    ) public onlyRole(DEFAULT_ADMIN_ROLE) {
+        require(
+            authorizedAccounts[member],
+            "CBDCAccessControl: account already disabled"
+        );
         authorizedAccounts[member] = false;
         emit DisabledAccount(member);
     }
