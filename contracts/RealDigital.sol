@@ -121,7 +121,7 @@ contract RealDigital is ERC20Burnable, Pausable, CBDCAccessControl {
     /// @dev Burns tokens from the sender's address.
     /// @param amount The amount of tokens to burn.
     function burn(uint256 amount) public override whenNotPaused {
-        super.burn(amount);
+        _burn(amount);
     }
 
     /// @dev Transfers tokens from a specified address and burns them.
