@@ -41,19 +41,19 @@ describe("CBDCAccessControl", () => {
   it("should enable and disable an account", async () => {
     const { contract, accounts } = await deployFixture();
 
-    expect(
-      await contract.authorizedAccounts(accounts.account1.address)
-    ).to.equal(false);
+    expect(await contract.verifyAccount(accounts.account1.address)).to.equal(
+      false
+    );
 
     await contract.enableAccount(accounts.account1.address);
-    expect(
-      await contract.authorizedAccounts(accounts.account1.address)
-    ).to.equal(true);
+    expect(await contract.verifyAccount(accounts.account1.address)).to.equal(
+      true
+    );
 
     await contract.disableAccount(accounts.account1.address);
-    expect(
-      await contract.authorizedAccounts(accounts.account1.address)
-    ).to.equal(false);
+    expect(await contract.verifyAccount(accounts.account1.address)).to.equal(
+      false
+    );
   });
 
   it("should verify an authorized account", async () => {
@@ -124,11 +124,15 @@ describe("CBDCAccessControl", () => {
   it("should enforce access control modifier", async () => {
     const { contract, accounts } = await deployFixture();
 
+    const DEFAULT_ADMIN_ROLE = await contract.DEFAULT_ADMIN_ROLE();
+
     await contract.enableAccount(accounts.account1.address);
     const invalidAccess = contract.connect(accounts.account1);
 
     await expect(
       invalidAccess.disableAccount(accounts.account1.address)
-    ).to.be.revertedWith("CBDCAccessControl: accounts not authorized");
+    ).to.be.revertedWith(
+      `AccessControl: account ${accounts.account1.address.toLowerCase()} is missing role ${DEFAULT_ADMIN_ROLE}`
+    );
   });
 });

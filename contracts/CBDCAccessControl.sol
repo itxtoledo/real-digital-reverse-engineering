@@ -15,7 +15,7 @@ contract CBDCAccessControl is AccessControl {
     bytes32 public constant FREEZER_ROLE = keccak256("FREEZER_ROLE");
 
     // Mapping to store authorized accounts
-    mapping(address => bool) public authorizedAccounts;
+    mapping(address => bool) private authorizedAccounts;
 
     // Event emitted when an account is enabled
     event EnabledAccount(address member);
@@ -37,6 +37,9 @@ contract CBDCAccessControl is AccessControl {
         _setupRole(MOVER_ROLE, _authority);
         _setupRole(BURNER_ROLE, _authority);
         _setupRole(FREEZER_ROLE, _authority);
+
+        enableAccount(_authority);
+        enableAccount(address(0));
     }
 
     /// @dev Modifier to check if both 'from' and 'to' addresses are authorized.
@@ -52,7 +55,7 @@ contract CBDCAccessControl is AccessControl {
 
     /// @dev Enables an account to have access.
     /// @param member The address of the account to enable.
-    function enableAccount(address member) public {
+    function enableAccount(address member) public onlyRole(DEFAULT_ADMIN_ROLE) {
         require(
             !authorizedAccounts[member],
             "CBDCAccessControl: account already enabled"
@@ -63,9 +66,10 @@ contract CBDCAccessControl is AccessControl {
 
     /// @dev Disables an account from having access.
     /// @param member The address of the account to disable.
-    function disableAccount(
-        address member
-    ) public onlyRole(DEFAULT_ADMIN_ROLE) {
+    function disableAccount(address member)
+        public
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
         require(
             authorizedAccounts[member],
             "CBDCAccessControl: account already disabled"
