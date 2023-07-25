@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 
 /// @title CBDCAccessControl Contract
 /// @notice A contract that manages access control for the CBDC token.
-contract CBDCAccessControl is AccessControl {
+abstract contract CBDCAccessControl is AccessControl {
     // Roles for different access control functions
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
