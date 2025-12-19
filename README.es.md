@@ -1,5 +1,7 @@
 🌍 [English](README.md) | 🇵🇹 [Português](README.pt.md) | 🇪🇸 [Español](README.es.md) | 🇫🇷 [Français](README.fr.md) | 🇩🇪 [Deutsch](README.de.md)
 
+> **AVISO:** Este repositorio ha sido archivado porque "Real Digital" fue descontinuado.
+
 # Real Digital CBDC Ingeniería Inversa 🕵️‍♂️💻
 
 Este proyecto es un intento de realizar ingeniería inversa en los contratos inteligentes de la Moneda Digital del Banco Central Real (CBDC). Dado que el código fuente de Real Digital no se hizo público, solo se proporcionaron los ABI. Por lo tanto, decidí realizar ingeniería inversa e inferir la funcionalidad de algunas de las funciones.

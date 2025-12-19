@@ -1,5 +1,7 @@
 🌍 [English](README.md) | 🇵🇹 [Português](README.pt.md) | 🇪🇸 [Español](README.es.md) | 🇫🇷 [Français](README.fr.md) | 🇩🇪 [Deutsch](README.de.md)
 
+> **AVISO:** Este repositório foi arquivado porque o Real Digital foi descontinuado.
+
 # Real Digital CBDC Engenharia Reversa 🕵️‍♂️💻
 
 Este projeto é uma tentativa de realizar engenharia reversa nos contratos inteligentes da Real Digital Central Bank Digital Currency (CBDC). Como o código-fonte da Real Digital não foi disponibilizado publicamente, apenas os ABIs foram fornecidos. Portanto, decidi realizar a engenharia reversa e inferir a funcionalidade de algumas das funções.

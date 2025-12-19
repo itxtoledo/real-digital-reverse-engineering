@@ -1,5 +1,7 @@
 🌍 [English](README.md) | 🇵🇹 [Português](README.pt.md) | 🇪🇸 [Español](README.es.md) | 🇫🇷 [Français](README.fr.md) | 🇩🇪 [Deutsch](README.de.md)
 
+> **NOTICE:** This repository has been archived because the "Real Digital" project was discontinued.
+
 # Real Digital CBDC Predicted Implementation 🔮💻
 
 This project is an attempt to predict the Real Digital Central Bank Digital Currency (CBDC) smart contracts. As the source code for Real Digital was not made publicly available, only the ABIs were provided. Therefore, I took it upon myself to infer the functionality of some of the functions.

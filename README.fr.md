@@ -1,5 +1,7 @@
 🌍 [English](README.md) | 🇵🇹 [Português](README.pt.md) | 🇪🇸 [Español](README.es.md) | 🇫🇷 [Français](README.fr.md) | 🇩🇪 [Deutsch](README.de.md)
 
+> **AVIS :** Ce dépôt a été archivé parce que "Real Digital" a été abandonné.
+
 # Ré-ingénierie de la Monnaie Numérique de la Banque Centrale Real 🕵️‍♂️💻
 
 Ce projet vise à réaliser la ré-ingénierie des contrats intelligents de la Monnaie Numérique de la Banque Centrale Real (CBDC). Comme le code source de Real n'a pas été rendu public, seules les ABI ont été fournies. Par conséquent, j'ai entrepris de réaliser la ré-ingénierie et d'inférer la fonctionnalité de certaines des fonctions.

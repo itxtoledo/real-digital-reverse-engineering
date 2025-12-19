@@ -1,5 +1,7 @@
 🌍 [English](README.md) | 🇵🇹 [Português](README.pt.md) | 🇪🇸 [Español](README.es.md) | 🇫🇷 [Français](README.fr.md) | 🇩🇪 [Deutsch](README.de.md)
 
+> **HINWEIS:** Dieses Repository wurde archiviert, weil "Real Digital" eingestellt wurde.
+
 # Real Digital CBDC Reverse Engineering 🕵️‍♂️💻
 
 Dieses Projekt ist ein Versuch, Reverse Engineering an den Smart Contracts der Real Digital Central Bank Digital Currency (CBDC) durchzuführen. Da der Quellcode von Real Digital nicht öffentlich zugänglich gemacht wurde, wurden nur die ABIs bereitgestellt. Daher habe ich mich entschieden, Reverse Engineering durchzuführen und die Funktionalität einiger Funktionen zu erschließen.
